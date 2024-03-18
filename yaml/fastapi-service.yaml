@@ -1,0 +1,19 @@
+# YAML file to create a service object in Openshift that selects pods with the label app: fastapi-app
+
+# Create the service by running the command:
+
+# oc apply -f fastapi-service.yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: myfastapi-service
+spec:
+  selector:
+    app: fastapi-app
+  ports:
+    # Expose port 8080 of the pods and map them to port 8080 of the service
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP

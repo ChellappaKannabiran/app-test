@@ -1,0 +1,45 @@
+# To create the deployment object, enter:
+
+# oc apply -f fastapi-deployment.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-deployment
+
+# Deployment specification
+spec:
+  # Set number of pods we require
+  replicas: 1
+  # Specify which  pods are managed by this deployment
+  selector:
+    # The label of the app below must match that in the template below
+    matchLabels:
+      app: fastapi-app
+
+  # Specify a template for regular pod configuration nested inside our deployment spec.
+  # When the deployment creates pods, it will create them using this template
+  template:
+    metadata:
+      labels:
+        app: fastapi-app
+    spec:
+      serviceAccountName: default
+      imagePullSecrets: 
+      - name: default-dockercfg-xcmp5
+      - name: harbor-pull-secret
+      containers:
+      - name: fastapi-test
+        image: harbor.stfc.ac.uk/fastapi-example/my-fastapi-test:v1.0
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources:
+          limits:
+            cpu: '1'
+            memory: 1000Mi
+          requests:
+            cpu: 10m
+            memory: 64Mi
+      
+

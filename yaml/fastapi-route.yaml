@@ -1,0 +1,23 @@
+
+# A route exposes a service to the outside world by associating the chosen service with an externally reachable host name
+# If an explicit host is not provided (under spec: host:), then Openshift automatically generates one for you, of the form
+# <route-name>[-<namespace>].<suffix>
+
+# See https://clouddocs.f5.com/containers/latest/userguide/routes.html  
+
+# To create the route, type:
+
+# oc apply -f fastapi-route.yaml
+
+# Then, to get the url of the route, type 'oc get route fastapi-route'
+
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: fastapi-route
+spec:
+  to:
+    kind: Service
+    name: myfastapi-service
+  port:
+    targetPort: 8080
